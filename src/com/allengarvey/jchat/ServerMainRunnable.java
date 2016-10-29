@@ -1,9 +1,7 @@
 package com.allengarvey.jchat;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -21,15 +19,14 @@ public class ServerMainRunnable implements Runnable{
     //server code based on: https://systembash.com/a-simple-java-tcp-server-and-tcp-client/
     @Override
     public void run(){
-        String clientData = "";
-
         System.out.printf("jChat server starting on 127.0.0.1:%d\n", portNum);
         ServerSocket tcpSocket = null;
         try {
             tcpSocket = new ServerSocket(portNum);
         } catch (IOException e) {
-            System.out.printf("Couldn't start server of port %d, check if port is being used by another process\n", portNum);
-            //exit program because we can't start server
+            //port is busy or need to use 'sudo' to bind to port
+            System.out.printf("Couldn't start server of port %d, check if port is busy or you have suitable permissions to bind to that port\n", portNum);
+            //exit thread because we can't start server
             return;
         }
 
@@ -61,14 +58,5 @@ public class ServerMainRunnable implements Runnable{
             }
 
         }
-        //close socket
-        /*
-        System.out.println("Server shutting down");
-        try {
-            tcpSocket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        */
     }
 }
