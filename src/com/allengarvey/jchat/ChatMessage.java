@@ -17,9 +17,12 @@ public class ChatMessage {
     //formats message when used for sending
     @Override
     public String toString() {
-        //replace extra newlines at end of message and make sure message ends in newline
-        String cleanedBody = messageBody.replaceAll("[\\n\\s]+$", "") + "\n";
-        return "MUSER: " + userName + "\tMBODY: " + cleanedBody;
+        //replace extra newlines at end of message
+        String cleanedBody = messageBody.replaceAll("[\\n\\s]+$", "");
+        //message should be in format username> message
+        String fullMessage = userName + "> " + cleanedBody;
+        //trim message to be no more than max length and add newline at the end
+        return fullMessage.substring(0, Main.MESSAGE_MAX_LENGTH - 1) + "\n";
 
     }
 }
