@@ -21,8 +21,13 @@ public class ChatMessage {
         String cleanedBody = messageBody.replaceAll("[\\n\\s]+$", "");
         //message should be in format username> message
         String fullMessage = userName + "> " + cleanedBody;
-        //trim message to be no more than max length and add newline at the end
-        return fullMessage.substring(0, Main.MESSAGE_MAX_LENGTH - 1) + "\n";
+        //trim message to be no more than max length
+        //need an extra character for newline
+        if(fullMessage.length() > Main.MESSAGE_MAX_LENGTH - 1){
+            fullMessage = fullMessage.substring(0, Main.MESSAGE_MAX_LENGTH - 1);
+        }
+        //make sure to add newline at the end
+        return fullMessage + "\n";
 
     }
 }
