@@ -23,20 +23,21 @@ public class Main {
         return true;
     }
 
-    public static synchronized ChatMessage[] addGetNewMessages(ChatMessage message, int index){
+    public static synchronized ChatMessage[] addGetNewMessages(ChatMessage message, int startIndex){
         if(message != null){
             messagesList.add(message);
         }
         int messageListSize = messagesList.size();
-        if(index < 0 || index > messageListSize){
+        if(startIndex < 0 || startIndex > messageListSize){
             return new ChatMessage[0];
         }
 
-        ChatMessage[] ret = new ChatMessage[messageListSize - index];
-        for(int i=index; i < messageListSize; i++){
-            ret[i] = messagesList.get(i);
+        int unreadMessagesLength = messageListSize - startIndex;
+        ChatMessage[] unreadMessages = new ChatMessage[unreadMessagesLength];
+        for(int i=0; i < unreadMessagesLength; i++){
+            unreadMessages[i] = messagesList.get(i + startIndex);
         }
-        return ret;
+        return unreadMessages;
     }
 
     public static void main(String argv[]){
