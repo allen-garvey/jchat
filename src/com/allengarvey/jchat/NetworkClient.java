@@ -18,7 +18,9 @@ public class NetworkClient{
     private int currentMessageIndex;
     //shared flag between threads so that both threads have exited while loop
     //before closing connection
-    private boolean isQuitting;
+    private volatile boolean isQuitting;
+    //shared flag between threads so that messages are not sent to client before username response is set
+    private volatile boolean userNameResponseSent;
 
     public NetworkClient(Socket tcpSocket){
         this.connectionSocket = tcpSocket;
@@ -26,6 +28,7 @@ public class NetworkClient{
         currentMessageIndex = 0;
         userName = null;
         isQuitting = false;
+        userNameResponseSent = false;
     }
 
     public Socket getConnectionSocket(){
@@ -55,6 +58,7 @@ public class NetworkClient{
         return getSetUserName(null) != null;
     }
 
+
     //listens for user input
     //if user doesn't have username, attempts to set username
     //if that succeeds, sends username back, otherwise sends error
@@ -80,6 +84,7 @@ public class NetworkClient{
                     else{
                         //username setting succeeded, send it back
                         outToClient.writeBytes("UNAME: " + userName + "\n");
+                        userNameResponseSent = true;
                     }
 
                 }
@@ -103,7 +108,7 @@ public class NetworkClient{
             //check if connection needs to be shut down, because client sent \quit
             while(!isQuitting){
                 //don't send messages until client has a username
-                if(!isUserNameInitialized()){
+                if(!userNameResponseSent){
                     continue;
                 }
                 //get all unread messages, broadcast them, and increment index
