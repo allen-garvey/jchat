@@ -10,6 +10,7 @@ public class Main {
     //default port server runs on if none given
     public static final int DEFAULT_PORT = 5000;
     public static final String SERVER_USER_NAME = "Oracle";
+    public static final int MESSAGE_MAX_LENGTH = 500;
     //used to store all messages sent
     private static ArrayList<ChatMessage> messagesList;
     //used to determine unique usernames
