@@ -26,9 +26,11 @@ public class NetworkClient{
 
     private synchronized String getSetUserName(String userName){
         if(userName != null){
-           boolean isUserNameAvailable = Main.addUserName(userName);
+           //remove extra whitespace
+           String cleanedUserName = userName.replaceAll("[\\s\\n]", "");
+           boolean isUserNameAvailable = Main.addUserName(cleanedUserName);
            if(isUserNameAvailable){
-               this.userName = userName;
+               this.userName = cleanedUserName;
            }
         }
 
@@ -42,14 +44,24 @@ public class NetworkClient{
     public void listenAction(){
         try {
             BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
+            DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
             String clientData;
             while((clientData = inFromClient.readLine()) != null) {
-                System.out.println("Received: " + clientData);
+                //System.out.println("Received: " + clientData);
                 if(clientData.equals("quit")){
                     break;
                 }
+                //if username not set, try setting username
                 if(!isUserNameInitialized()){
                     getSetUserName(clientData);
+                    //check if setting username succeeded
+                    if(!isUserNameInitialized()){
+                        outToClient.writeBytes("ERROR: "  + clientData + " is not available\n");
+                    }
+                    else{
+                        outToClient.writeBytes("UNAME: " + userName + "\n");
+                    }
+
                 }
                 else{
                     Main.addGetNewMessages(new ChatMessage(userName, clientData), -1);
