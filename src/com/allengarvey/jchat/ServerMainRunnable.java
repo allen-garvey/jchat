@@ -35,7 +35,7 @@ public class ServerMainRunnable implements Runnable{
         while(true){
             try{
                 Socket connectionSocket = tcpSocket.accept();
-                System.out.println("new tcp connection created");
+                //System.out.println("new tcp connection created");
                 NetworkClient newClient = new NetworkClient(connectionSocket);
                 //start subthread to listen to client requests
                 (new Thread(new Runnable(){
