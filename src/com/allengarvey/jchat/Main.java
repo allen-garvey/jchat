@@ -67,6 +67,14 @@ public class Main {
             portNum = Integer.parseInt(argv[0]);
         }
 
+        //print title and extra credit notices
+        System.out.println("CS372 Project 1 by Allen Garvey");
+        System.out.println("**EC**: Server is multi-threaded");
+        System.out.println("**EC**: Hosts are connected in one group chat");
+        System.out.println("**EC**: Any host can send at any time");
+        System.out.println("");
+
+
         //start main server thread
         (new Thread(new ServerMainRunnable(portNum))).start();
 
