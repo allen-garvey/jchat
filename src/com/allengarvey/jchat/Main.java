@@ -22,7 +22,7 @@ public class Main {
 
         String clientData = "";
 
-        System.out.printf("Server starting on 127.0.0.1:%d\n", portNum);
+        System.out.printf("j Chat server starting on 127.0.0.1:%d\n", portNum);
         ServerSocket tcpSocket = null;
         try {
             tcpSocket = new ServerSocket(portNum);
