@@ -10,6 +10,7 @@ import java.net.Socket;
 /**
  * Created by allen on 10/29/16.
  */
+
 public class ServerMainRunnable implements Runnable{
     int portNum;
 
@@ -17,6 +18,7 @@ public class ServerMainRunnable implements Runnable{
         this.portNum = portNum;
     }
 
+    //server code based on: https://systembash.com/a-simple-java-tcp-server-and-tcp-client/
     @Override
     public void run(){
         String clientData = "";

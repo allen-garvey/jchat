@@ -13,11 +13,13 @@ public class NetworkClient{
     private Socket connectionSocket;
     private String userName;
     private int currentMessageIndex;
+    private boolean isQuitting;
 
     public NetworkClient(Socket tcpSocket){
         this.connectionSocket = tcpSocket;
         currentMessageIndex = 0;
         userName = null;
+        isQuitting = false;
     }
 
     public Socket getConnectionSocket(){
@@ -48,7 +50,8 @@ public class NetworkClient{
             String clientData;
             while((clientData = inFromClient.readLine()) != null) {
                 //System.out.println("Received: " + clientData);
-                if(clientData.equals("quit")){
+                //check to see if client sends \quit - first remove trailing newlines
+                if(clientData.replaceAll("[\\n]+$", "").equals("\\quit")){
                     break;
                 }
                 //if username not set, try setting username
@@ -69,17 +72,16 @@ public class NetworkClient{
             }
         } catch (IOException e) {
             System.out.println("Problem reading line from client " + userName);
-            try{
-                connectionSocket.close();
-            }catch(IOException e1){
-                //e1.printStackTrace();
-            }
+        }
+        finally{
+            //called when client sends \\quit
+            isQuitting = true;
         }
     }
     public void broadcastAction(){
         try {
             DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
-            while(true){
+            while(!isQuitting){
                 if(!isUserNameInitialized()){
                     continue;
                 }
@@ -93,13 +95,14 @@ public class NetworkClient{
             }
         } catch (IOException e) {
             System.out.println("Problem broadcasting to client " + userName);
-            /*
+        }
+        finally{
             try{
+                //System.out.println("Closing connection with " + userName);
                 connectionSocket.close();
             }catch(IOException e1){
                 //e1.printStackTrace();
             }
-            */
         }
 
     }

@@ -6,7 +6,6 @@ import java.util.*;
  * Created by allen on 10/28/16.
  */
 //main class
-//server code based on: https://systembash.com/a-simple-java-tcp-server-and-tcp-client/
 public class Main {
     //default port server runs on if none given
     public static final int DEFAULT_PORT = 5000;
