@@ -45,6 +45,14 @@ public class ServerMainRunnable implements Runnable{
                     }
                 })).start();
 
+                //start thread to broadcast messages to client
+                (new Thread(new Runnable(){
+                    @Override
+                    public void run(){
+                        newClient.broadcastAction();
+                    }
+                })).start();
+
             } catch (IOException e) {
                 System.out.println("Server can't accept anymore tcp connections");
                 continue;

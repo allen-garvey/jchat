@@ -42,7 +42,6 @@ public class NetworkClient{
     public void listenAction(){
         try {
             BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
-            DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
             String clientData;
             while((clientData = inFromClient.readLine()) != null) {
                 System.out.println("Received: " + clientData);
@@ -53,10 +52,7 @@ public class NetworkClient{
                     getSetUserName(clientData);
                 }
                 else{
-                    ChatMessage[] unreadMessages = Main.addGetNewMessages(new ChatMessage(userName, clientData), currentMessageIndex);
-                    for(ChatMessage message : unreadMessages){
-                        outToClient.writeBytes(message.toString());
-                    }
+                    Main.addGetNewMessages(new ChatMessage(userName, clientData), -1);
                 }
             }
         } catch (IOException e) {
@@ -67,6 +63,33 @@ public class NetworkClient{
                 //e1.printStackTrace();
             }
         }
+    }
+    public void broadcastAction(){
+        try {
+            DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
+            while(true){
+                if(!isUserNameInitialized()){
+                    continue;
+                }
+                else{
+                    ChatMessage[] unreadMessages = Main.addGetNewMessages(null, currentMessageIndex);
+                    for(ChatMessage message : unreadMessages){
+                        outToClient.writeBytes(message.toString());
+                        currentMessageIndex++;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Problem broadcasting to client " + userName);
+            /*
+            try{
+                connectionSocket.close();
+            }catch(IOException e1){
+                //e1.printStackTrace();
+            }
+            */
+        }
+
     }
 
 
