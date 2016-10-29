@@ -10,9 +10,9 @@ import java.io.InputStreamReader;
 public class TerminalClient{
     //shared flag between threads so that listenAction thread can communicate to
     //broadcast action to quit
-    boolean isQuitting;
+    private volatile boolean isQuitting;
     //terminal client's username
-    String userName;
+    private String userName;
     //index of last message successful broadcast
     private int currentMessageIndex;
 
