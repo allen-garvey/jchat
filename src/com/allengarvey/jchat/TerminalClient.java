@@ -31,6 +31,8 @@ public class TerminalClient{
         this.userName = userName;
     }
 
+    //get input from terminal and create message based on that
+    //based on: http://stackoverflow.com/questions/4644415/java-how-to-get-input-from-system-console
     void listenAction(){
         String clientInput = null;
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
