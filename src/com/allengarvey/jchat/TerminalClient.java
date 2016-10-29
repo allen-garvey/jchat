@@ -39,6 +39,7 @@ public class TerminalClient{
         System.out.println("Enter a message to send it, or \\quit to exit");
         try{
             while((clientInput = br.readLine()) != null){
+                System.out.println(clientInput);
                 //check to see if client sends \quit - first remove trailing newlines
                 if(clientInput.replaceAll("[\\n]+$", "").equals("\\quit")){
                     break;
@@ -63,11 +64,16 @@ public class TerminalClient{
             //get all unread messages, broadcast them, and increment index
             ChatMessage[] unreadMessages = Main.addGetNewMessages(null, currentMessageIndex);
             for(ChatMessage message : unreadMessages){
+                //check to make sure we shouldn't quit
+                if(isQuitting){
+                    break;
+                }
                 //print message to console - no println because message already ends in \n
                 System.out.print(message.toString());
                 //message now broadcast, so increment index
                 currentMessageIndex++;
             }
         }
+        System.out.println("Exiting client session. Press control-c to stop the server.");
     }
 }
