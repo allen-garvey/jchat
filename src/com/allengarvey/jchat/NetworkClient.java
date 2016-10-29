@@ -14,7 +14,7 @@ public class NetworkClient{
     private Socket connectionSocket;
     //username of client
     private String userName;
-    //index of last message suceesfull broadcast
+    //index of last message successful broadcast
     private int currentMessageIndex;
     //shared flag between threads so that both threads have exited while loop
     //before closing connection
