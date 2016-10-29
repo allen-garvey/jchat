@@ -27,7 +27,7 @@ public class NetworkClient{
     private synchronized String getSetUserName(String userName){
         if(userName != null){
            //remove extra whitespace
-           String cleanedUserName = userName.replaceAll("[\\s\\n]", "");
+           String cleanedUserName = userName.replaceAll("[\\s\\n\\t]", "");
            boolean isUserNameAvailable = Main.addUserName(cleanedUserName);
            if(isUserNameAvailable){
                this.userName = cleanedUserName;
