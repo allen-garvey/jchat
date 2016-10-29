@@ -36,7 +36,7 @@ public class TerminalClient{
     void listenAction(){
         String clientInput = null;
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Enter a message to send it, or \\quit to exit");
+        System.out.println("Enter a message to send, or \\quit to exit");
         try{
             while((clientInput = br.readLine()) != null){
                 System.out.println(clientInput);
