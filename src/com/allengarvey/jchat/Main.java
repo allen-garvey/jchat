@@ -77,6 +77,14 @@ public class Main {
             }
         })).start();
 
+        //start thread waiting for client terminal input
+        (new Thread(new Runnable(){
+            @Override
+            public void run(){
+                terminalClient.listenAction();
+            }
+        })).start();
+
 
     }
 }

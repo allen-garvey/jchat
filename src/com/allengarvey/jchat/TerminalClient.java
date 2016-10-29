@@ -1,5 +1,9 @@
 package com.allengarvey.jchat;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 /**
  * Created by allen on 10/29/16.
  */
@@ -28,7 +32,26 @@ public class TerminalClient{
     }
 
     void listenAction(){
+        String clientInput = null;
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("Enter a message to send it, or \\quit to exit");
+        try{
+            while((clientInput = br.readLine()) != null){
+                //check to see if client sends \quit - first remove trailing newlines
+                if(clientInput.replaceAll("[\\n]+$", "").equals("\\quit")){
+                    break;
+                }
+                //add message to queue
+                Main.addGetNewMessages(new ChatMessage(userName, clientInput), -1);
+            }
+        }
+        catch(IOException e){
 
+        }
+        finally{
+            //client entered \quit, so signal broadcastAction to quit
+            isQuitting = true;
+        }
     }
 
     //loop that gets unread messages since last checked and broadcasts them to client
