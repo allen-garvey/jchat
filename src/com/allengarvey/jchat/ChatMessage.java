@@ -14,8 +14,8 @@ public class ChatMessage {
 
     @Override
     public String toString() {
-        //replace extra newlines at end of message
-        String cleanedBody = messageBody.replaceAll("[\\n\\s]+$", "");
+        //replace extra newlines at end of message and make sure message ends in newline
+        String cleanedBody = messageBody.replaceAll("[\\n\\s]+$", "") + "\n";
         return "UNAME: " + userName + " MBODY: " + cleanedBody;
 
     }

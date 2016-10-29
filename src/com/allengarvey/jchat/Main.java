@@ -26,9 +26,12 @@ public class Main {
     public static synchronized ChatMessage[] addGetNewMessages(ChatMessage message, int index){
         if(message != null){
             messagesList.add(message);
-            return new ChatMessage[0];
         }
         int messageListSize = messagesList.size();
+        if(index < 0 || index > messageListSize){
+            return new ChatMessage[0];
+        }
+
         ChatMessage[] ret = new ChatMessage[messageListSize - index];
         for(int i=index; i < messageListSize; i++){
             ret[i] = messagesList.get(i);

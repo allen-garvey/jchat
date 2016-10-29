@@ -31,47 +31,25 @@ public class ServerMainRunnable implements Runnable{
             return;
         }
 
-
-        //start server listening
+        //start server listening for new connections
         while(true){
-            Socket connectionSocket = null;
-            BufferedReader inFromClient = null;
-            DataOutputStream outToClient = null;
             try{
-                //create a new thread here
-                connectionSocket = tcpSocket.accept();
+                Socket connectionSocket = tcpSocket.accept();
                 System.out.println("new tcp connection created");
+                NetworkClient newClient = new NetworkClient(connectionSocket);
+                //start subthread to listen to client requests
+                (new Thread(new Runnable(){
+                    @Override
+                    public void run(){
+                        newClient.listenAction();
+                    }
+                })).start();
+
             } catch (IOException e) {
                 System.out.println("Server can't accept anymore tcp connections");
                 continue;
             }
-            try {
-                inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
-                outToClient = new DataOutputStream(connectionSocket.getOutputStream());
-            } catch (IOException e) {
-                System.out.println("Problem creating input reader or output stream");
-                continue;
-            }
-            try {
-                while((clientData = inFromClient.readLine()) != null) {
-                    System.out.println("Received: " + clientData);
-                    if (clientData.equals("quit")) {
-                        break;
-                    }
-                    outToClient.writeBytes("Received: " + clientData + "\n");
-                }
-            } catch (IOException e) {
-                System.out.println("Problem reading line from client");
-                continue;
-            }
-//            if(clientData.equals("quit")){
-//                break;
-//            }
-//            try{
-//                outToClient.writeBytes("Received: " + clientData + "\n");
-//            } catch (IOException e) {
-//                System.out.println("Couldn't send data to client");
-//            }
+
         }
         //close socket
         /*
