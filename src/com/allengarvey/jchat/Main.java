@@ -56,7 +56,8 @@ public class Main {
         //initialize containers
         messagesList = new ArrayList<>();
         userNamesSet = new HashSet<>();
-        addUserName(SERVER_USER_NAME);
+        //add client for server terminal
+        TerminalClient terminalClient = new TerminalClient(SERVER_USER_NAME);
 
         //initialize server listening port
         int portNum = DEFAULT_PORT;
@@ -64,8 +65,17 @@ public class Main {
         if(argv.length > 0){
             portNum = Integer.parseInt(argv[0]);
         }
+
         //start main server thread
         (new Thread(new ServerMainRunnable(portNum))).start();
+
+        //start thread for terminal broadcast
+        (new Thread(new Runnable(){
+            @Override
+            public void run(){
+                terminalClient.broadcastAction();
+            }
+        })).start();
 
 
     }
