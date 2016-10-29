@@ -13,6 +13,8 @@ public class NetworkClient{
     private Socket connectionSocket;
     private String userName;
     private int currentMessageIndex;
+    //shared flag between threads so that both threads have exited while loop
+    //before closing connection
     private boolean isQuitting;
 
     public NetworkClient(Socket tcpSocket){
@@ -74,7 +76,7 @@ public class NetworkClient{
             System.out.println("Problem reading line from client " + userName);
         }
         finally{
-            //called when client sends \\quit
+            //called when client sends \quit
             isQuitting = true;
         }
     }
