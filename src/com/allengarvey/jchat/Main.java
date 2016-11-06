@@ -71,20 +71,10 @@ public class Main {
         (new Thread(new ServerMainRunnable(portNum))).start();
 
         //start thread for terminal broadcast
-        (new Thread(new Runnable(){
-            @Override
-            public void run(){
-                terminalClient.broadcastAction();
-            }
-        })).start();
+        (new Thread(() -> terminalClient.broadcastAction())).start();
 
         //start thread waiting for client terminal input
-        (new Thread(new Runnable(){
-            @Override
-            public void run(){
-                terminalClient.listenAction();
-            }
-        })).start();
+        (new Thread(() -> terminalClient.listenAction())).start();
 
 
     }

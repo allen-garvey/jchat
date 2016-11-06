@@ -37,20 +37,10 @@ public class ServerMainRunnable implements Runnable{
                 //System.out.println("new tcp connection created");
                 NetworkClient newClient = new NetworkClient(connectionSocket);
                 //start subthread to listen to client requests
-                (new Thread(new Runnable(){
-                    @Override
-                    public void run(){
-                        newClient.listenAction();
-                    }
-                })).start();
+                (new Thread(() -> newClient.listenAction())).start();
 
                 //start thread to broadcast messages to client
-                (new Thread(new Runnable(){
-                    @Override
-                    public void run(){
-                        newClient.broadcastAction();
-                    }
-                })).start();
+                (new Thread(() -> newClient.broadcastAction())).start();
 
             } catch (IOException e) {
                 System.out.println("Server can't accept anymore tcp connections");
